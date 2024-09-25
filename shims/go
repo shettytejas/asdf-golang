@@ -1,0 +1,18 @@
+#! /usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+# This script wraps go so to run `asdf reshim` after installs.
+# Any other cases are passed-through to go
+
+this_dir=$(dirname "${BASH_SOURCE[0]}")
+plugin_name=$(basename "$(dirname "$this_dir")")
+
+this_dir=$(cd "$this_dir" && pwd -P) # Normalizes the directory
+
+asdf_data_dir=$(cd "${ASDF_DATA_DIR:-$HOME/.asdf}" && pwd -P)
+asdf_shims_dir="$asdf_data_dir/shims"
+plugin_dir="$asdf_data_dir/plugins/$plugin_name"
+
+# exec $ASDF_DIR/bin/asdf exec go "$@"
